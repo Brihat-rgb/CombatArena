@@ -6,8 +6,10 @@ public class playerController : MonoBehaviour
 {
     public float speed = 2f;
     public float rotationSpeed = 2f;
+    public float jumpForce = 5f; // Add jump force
     Rigidbody rb;
     Animator animator;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -16,7 +18,27 @@ public class playerController : MonoBehaviour
     }
 
     // Update is called once per frame
-    public void FixedUpdate()
+    void Update()
+    {
+        // Input checks for actions
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            animator.SetTrigger("jump"); // Trigger jump animation
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse); // Apply jump force
+        }
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            animator.SetTrigger("strike"); // Trigger strike animation
+        }
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            animator.SetTrigger("block"); // Trigger block animation
+        }
+    }
+
+    void FixedUpdate()
     {
         float translation = Input.GetAxis("Vertical") * speed;
         float rotation = Input.GetAxis("Horizontal") * speed;
