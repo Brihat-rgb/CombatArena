@@ -9,10 +9,12 @@ public class gameManagerLogic : MonoBehaviour
     int coinCollect  = 0;
 
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI timerText;
+    public GameObject winPanel;
+    public GameObject losePanel;
 
-    public TextMeshProUGUI timerDataText;
 
-    float timerData = 0;
+    public float timer = 30;
 
     public void coinAdd()
     {
@@ -23,9 +25,25 @@ public class gameManagerLogic : MonoBehaviour
 
     public void Update()
     {
-        timerData += Time.deltaTime;
-        TimeSpan timerDataSpan = TimeSpan.FromSeconds(timerData);
+        if (!winPanel.activeSelf)
+        {
+            if (timer > 0)
+            {
+                timer -= Time.deltaTime;
+                TimeSpan timerData = TimeSpan.FromSeconds(timer);
+                timerText.text = "Time: " + timerData.Seconds;
 
-        timerDataText.text = "Time: " + timerDataSpan;
+                if (coinCollect == 6)
+                {
+                    winPanel.SetActive(true);
+                    Time.timeScale = 0.5f;
+                }
+            }
+            else
+            {
+                losePanel.SetActive(true);
+                Time.timeScale = 0.5f;
+            }
+        }
     }
 }
